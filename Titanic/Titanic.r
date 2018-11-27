@@ -7,6 +7,7 @@ library(dplyr)
 library(tidyr)
 library(forcats)
 library(ggmosaic)
+library(shiny)
 
 titanic = read.csv("titanic.csv",header = TRUE,sep = ";") #read the datafile
 titanic = titanic[-nrow(titanic),] #remove last line that is only NA
