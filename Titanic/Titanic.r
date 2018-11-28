@@ -156,7 +156,52 @@ scatter.smooth(families$surv,families$count)
 
 
 ###################################end of the descriptive model###############################
+##Initialize UI
+library(shiny)
+maleData <- titanic[  titanic$sex=="male" , ]
+femaleData <- titanic[  titanic$sex=="female" , ]
 
-
-
+if (interactive()) {
+  
+  ui <- fluidPage(
+    # Define Page title
+    titlePanel("Titanic Data Analysis"),
+    
+    #Define Slider part
+    radioButtons("gender", "Gender:",
+                 c("Both" = "sex",
+                   "Male" = "male",
+                   "Female" = "female")),
+    
+    #Define main panel
+    mainPanel(
+      plotOutput("distPlot"),
+      plotOutput("distPlot2")
+    )
+  )
+  
+  server <- function(input, output) {
+    output$distPlot <- renderPlot({
+      dist <- switch(input$gender,
+                     sex = titanic,
+                     male = maleData,
+                     female = femaleData,
+                     titanic)
+      
+      ggplot(dist) +
+        geom_bar(aes(x = sex,fill =sex))
+    })
+    output$distPlot2 <- renderPlot({
+      dist <- switch(input$gender,
+                     sex = titanic,
+                     male = maleData,
+                     female = femaleData,
+                     titanic)
+      ggplot(dist) + 
+        geom_bar(aes(sex,fill=survival))
+    })
+  }
+  
+  shinyApp(ui, server)
+}
 
