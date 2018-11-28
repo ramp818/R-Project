@@ -28,5 +28,13 @@ shinyServer(function(input, output) {
     ggplot(d()) +
       geom_bar(aes(x = sex,fill =sex))
   })
+  
+  #Render Male and female survived bar chart
+  output$distPlot2 <- renderPlot({
+    dist <- input$gender
+    
+    ggplot(titanic) + 
+      geom_bar(aes(sex,fill=survival))
+  })
 
 })

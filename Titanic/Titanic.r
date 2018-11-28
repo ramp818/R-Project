@@ -156,8 +156,6 @@ scatter.smooth(families$surv,families$count)
 
 
 ###################################end of the descriptive model###############################
-##Initialize UI
-library(shiny)
 maleData <- titanic[  titanic$sex=="male" , ]
 femaleData <- titanic[  titanic$sex=="female" , ]
 
