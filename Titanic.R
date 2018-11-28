@@ -1,3 +1,4 @@
+setwd("~/Documents/GitHub/Titanic")
 rm(list =ls()) #remove all objects
 
 #load libraries
