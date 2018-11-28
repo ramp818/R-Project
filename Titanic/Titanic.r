@@ -76,7 +76,7 @@ ggplot(titanic) +
   geom_bar(aes(x = sex,fill =sex))
 #twice as much men as women
 
-count(titanic,sex,survival) #how many men survived/died and how many women survived/died
+nGenderSurvival <- count(titanic,sex,survival) #how many men survived/died and how many women survived/died
 
 
 #plot of men and women and if the died or not

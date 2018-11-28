@@ -29,8 +29,8 @@ shinyUI(fluidPage(
       # Output: Tabset w/ plot, summary, and table ----
       tabsetPanel(type = "tabs",
                   tabPanel("Plot", plotOutput("distPlot"), plotOutput("distPlot2")),
-                  tabPanel("Summary"),
-                  tabPanel("Table")
+                  tabPanel("Summary", tableOutput("nGender"), tableOutput("nGenderSurvival")),
+                  tabPanel("Table", tableOutput("table"))
       )
     )
   )

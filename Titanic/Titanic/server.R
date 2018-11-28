@@ -36,5 +36,18 @@ shinyServer(function(input, output) {
     ggplot(titanic) + 
       geom_bar(aes(sex,fill=survival))
   })
+  
+  #Render table values
+  output$table <- renderTable({
+    d()
+  })
+  
+  output$nGender <- renderTable({
+    nPerGender
+  })
+  
+  output$nGenderSurvival <- renderTable({
+    nGenderSurvival
+  })
 
 })
