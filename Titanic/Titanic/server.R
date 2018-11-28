@@ -33,7 +33,7 @@ shinyServer(function(input, output) {
   output$distPlot2 <- renderPlot({
     dist <- input$gender
     
-    ggplot(titanic) + 
+    ggplot(d()) + 
       geom_bar(aes(sex,fill=survival))
   })
   
