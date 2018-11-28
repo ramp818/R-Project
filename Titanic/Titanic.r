@@ -63,7 +63,7 @@ names(titanic) #see the names
 
 count(titanic,passengerclass) #count the number of passengers in each class
 count(titanic,survival) #count the number of survived and died
-count(titanic,sex) #count the number of men and women
+nPerGender <-count(titanic,sex) #count the number of men and women
 tapply(titanic$fare, titanic$passengerclass, range,na.rm = TRUE)
 
 summary(titanic$fare)
@@ -160,48 +160,4 @@ scatter.smooth(families$surv,families$count)
 library(shiny)
 maleData <- titanic[  titanic$sex=="male" , ]
 femaleData <- titanic[  titanic$sex=="female" , ]
-
-if (interactive()) {
-  
-  ui <- fluidPage(
-    # Define Page title
-    titlePanel("Titanic Data Analysis"),
-    
-    #Define Slider part
-    radioButtons("gender", "Gender:",
-                 c("Both" = "sex",
-                   "Male" = "male",
-                   "Female" = "female")),
-    
-    #Define main panel
-    mainPanel(
-      plotOutput("distPlot"),
-      plotOutput("distPlot2")
-    )
-  )
-  
-  server <- function(input, output) {
-    output$distPlot <- renderPlot({
-      dist <- switch(input$gender,
-                     sex = titanic,
-                     male = maleData,
-                     female = femaleData,
-                     titanic)
-      
-      ggplot(dist) +
-        geom_bar(aes(x = sex,fill =sex))
-    })
-    output$distPlot2 <- renderPlot({
-      dist <- switch(input$gender,
-                     sex = titanic,
-                     male = maleData,
-                     female = femaleData,
-                     titanic)
-      ggplot(dist) + 
-        geom_bar(aes(sex,fill=survival))
-    })
-  }
-  
-  shinyApp(ui, server)
-}
 
