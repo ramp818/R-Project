@@ -1,0 +1,12 @@
+name: Titanic
+title: Titanic
+username:
+account: ramp818
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 594132
+bundleId: 1726071
+url: https://ramp818.shinyapps.io/Titanic/
+when: 1543413690.37759
+asMultiple: FALSE
+asStatic: FALSE

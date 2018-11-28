@@ -37,6 +37,21 @@ shinyServer(function(input, output) {
       geom_bar(aes(sex,fill=survival))
   })
   
+  output$distPlot3 <- renderPlot({
+    dist <- input$gender
+    
+    ggplot(d()) +
+      geom_bar(aes(sex,fill = survival),position = "fill")
+  })
+  
+  output$distPlot4 <- renderPlot({
+    dist <- input$gender
+    
+    ggplot(d()) +
+      geom_mosaic(aes(x = product(sex),fill = survival)) +
+      labs(x = "Gender",y = "Proportion that survived")
+  })
+  
   #Render table values
   output$table <- renderTable({
     d()
