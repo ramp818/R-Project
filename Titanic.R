@@ -160,3 +160,10 @@ scatter.smooth(families$surv,families$count)
 maleData <- titanic[  titanic$sex=="male" , ]
 femaleData <- titanic[  titanic$sex=="female" , ]
 
+saveRDS(titanic, file = "titanic.rds")
+saveRDS(titanic2, file = "titanic2.rds")
+saveRDS(families, file = "families.rds")
+saveRDS(femaleData, file = "femaleData.rds")
+saveRDS(maleData, file = "maleData.rds")
+saveRDS(nGenderSurvival, file = "nGenderSurvival.rds")
+

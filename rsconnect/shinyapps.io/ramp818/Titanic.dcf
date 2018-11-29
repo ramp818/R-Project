@@ -5,8 +5,8 @@ account: ramp818
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 594132
-bundleId: 1726109
+bundleId: 1728489
 url: https://ramp818.shinyapps.io/Titanic/
-when: 1543414622.93364
+when: 1543490051.03438
 asMultiple: FALSE
 asStatic: FALSE
