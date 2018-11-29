@@ -10,7 +10,7 @@ library(shiny)
 library(shinydashboard)
 
 # Define UI for application that draws a histogram
-dashboardPage(
+dashboardPage(skin = "black",
   dashboardHeader(title = "Titanic"),
   dashboardSidebar(
     radioButtons("gender", "Gender:",
@@ -18,7 +18,8 @@ dashboardPage(
                    "Male" = "male",
                    "Female" = "female")),
     sidebarMenu(
-      menuItem("Dashboard", tabName = "dashboard")
+      menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+      menuItem("Tables", tabName = "tables")
     )
   ),
   dashboardBody(
@@ -32,25 +33,37 @@ dashboardPage(
               fluidRow(
                 box(
                   status = "info", solidHeader = TRUE,
-                  title = "Number of men and woman in the Titanic",
-                  plotOutput("distPlot")
+                  title = "Gender and survival by class",
+                  plotOutput("distPlot"), collapsible = TRUE
                 ),
                 box(
                   status = "info", solidHeader = TRUE,
-                  title = "Number of men and woman that survived",
-                  plotOutput("distPlot2")
+                  title = "Men and woman survival",
+                  plotOutput("distPlot2"), collapsible = TRUE
                 )
               ),
               fluidRow(
                 box(
                   status = "info", solidHeader = TRUE,
-                  title = "Proportion",
-                  plotOutput("distPlot3")
+                  title = "Survival Proportion",
+                  plotOutput("distPlot3"), collapsible = TRUE
                 ),
                 box(
                   status = "info", solidHeader = TRUE,
-                  title = "Proportion",
-                  plotOutput("distPlot4")
+                  title = "Proportion that survived mosaic",
+                  plotOutput("distPlot4"), collapsible = TRUE
+                )
+              ),
+              fluidRow(
+                box(
+                  status = "info", solidHeader = TRUE,
+                  title = "Age distribution by gender",
+                  plotOutput("distPlot5"), collapsible = TRUE
+                ),
+                box(
+                  status = "info", solidHeader = TRUE,
+                  title = "Fare distribution by class",
+                  plotOutput("distPlot6"), collapsible = TRUE
                 )
               )
       )

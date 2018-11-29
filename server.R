@@ -6,7 +6,6 @@
 #    http://shiny.rstudio.com/
 #
 library(shiny)
-
 # Define server logic required to draw dashboard components
 shinyServer(function(input, output) {
    
@@ -24,7 +23,9 @@ shinyServer(function(input, output) {
     dist <- input$gender
     
     ggplot(d()) +
-      geom_bar(aes(x = sex,fill =sex))
+      geom_bar(aes(sex,fill = survival), position = "fill") +
+      facet_wrap( ~ passengerclass) +
+      labs(y="Survived/lived")
   })
   
   #Render Male and female survived bar chart
@@ -50,17 +51,14 @@ shinyServer(function(input, output) {
       labs(x = "Gender",y = "Proportion that survived")
   })
   
-  #Render table values
-  output$table <- renderTable({
-    d()
+  output$distPlot5 <- renderPlot({
+    ggplot(d()) +
+      geom_histogram(aes(x = age,fill = sex), bins = 35,na.rm = TRUE)
   })
   
-  output$nGender <- renderTable({
-    nPerGender
-  })
-  
-  output$nGenderSurvival <- renderTable({
-    nGenderSurvival
+  output$distPlot6 <- renderPlot({
+    ggplot(d()) + 
+      geom_histogram(aes(x = fare,fill = passengerclass), bins = 25,na.rm = TRUE)
   })
 
 })
