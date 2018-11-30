@@ -9,6 +9,9 @@ library(tidyr)
 library(forcats)
 library(ggmosaic)
 library(shiny)
+library(hexbin)
+library(MASS)
+library(depth)
 
 titanic = read.csv("titanic.csv",header = TRUE,sep = ";") #read the datafile
 titanic = titanic[-nrow(titanic),] #remove last line that is only NA
@@ -155,15 +158,28 @@ families$surv<-as.numeric(families$surv)
 families<-subset(families,families$count>1)
 scatter.smooth(families$surv,families$count)
 
-
-###################################end of the descriptive model###############################
 maleData <- titanic[  titanic$sex=="male" , ]
 femaleData <- titanic[  titanic$sex=="female" , ]
+###################################end of the descriptive model###############################
+############################Multivariate and depth analysis###################################
+scatter.smooth(titanic$fare,titanic$age)
+class(titanic$fare)
+class(titanic$age)
+titanicage<-subset(titanic,!is.na(titanic$age))
+AGE<-mean(titanicage$age)
+titanic$age<-ifelse(is.na(titanic$age),AGE,titanic$age)
+summary(titanic$age)
+titanicfare<-subset(titanic,!is.na(titanic$fare))
+fare<-mean(titanicfare$fare)
+titanic$fare<-ifelse(is.na(titanic$fare),fare,titanic$fare)
+summary(titanic$fare)
+core<-titanic[,c(5,9)]
+cor(core)
+bin<-hexbin(core[,2],core[,1], xbins=10, xlab="Norm 1", ylab="Norm 2") 
+plot(bin, main="Hexagonal Binning")
+correla<-kde2d(core[,2], core[,1], n = 100)
+persp3d(correla,col="red")
+colMeans(core)
+depth(c(33.29548,29.93940),core)
 
-saveRDS(titanic, file = "titanic.rds")
-saveRDS(titanic2, file = "titanic2.rds")
-saveRDS(families, file = "families.rds")
-saveRDS(femaleData, file = "femaleData.rds")
-saveRDS(maleData, file = "maleData.rds")
-saveRDS(nGenderSurvival, file = "nGenderSurvival.rds")
 
