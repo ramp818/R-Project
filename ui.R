@@ -8,8 +8,19 @@
 #
 library(shiny)
 library(shinydashboard)
+library("data.table")
+library(ggplot2) 
+library(readr)
+library(dplyr)
+library(tidyr)
+library(forcats)
+library(ggmosaic)
+library(shiny)
+library(hexbin)
+library(MASS)
+library(depth)
 
-# Define UI for application that draws a histogram
+# Define UI for application that draws the dashboard
 dashboardPage(skin = "black",
   dashboardHeader(title = "Titanic"),
   dashboardSidebar(
@@ -33,30 +44,6 @@ dashboardPage(skin = "black",
               fluidRow(
                 box(
                   status = "info", solidHeader = TRUE,
-                  title = "Gender and survival by class",
-                  plotOutput("distPlot"), collapsible = TRUE
-                ),
-                box(
-                  status = "info", solidHeader = TRUE,
-                  title = "Men and woman survival",
-                  plotOutput("distPlot2"), collapsible = TRUE
-                )
-              ),
-              fluidRow(
-                box(
-                  status = "info", solidHeader = TRUE,
-                  title = "Survival Proportion",
-                  plotOutput("distPlot3"), collapsible = TRUE
-                ),
-                box(
-                  status = "info", solidHeader = TRUE,
-                  title = "Proportion that survived mosaic",
-                  plotOutput("distPlot4"), collapsible = TRUE
-                )
-              ),
-              fluidRow(
-                box(
-                  status = "info", solidHeader = TRUE,
                   title = "Age distribution by gender",
                   plotOutput("distPlot5"), collapsible = TRUE
                 ),
@@ -64,6 +51,31 @@ dashboardPage(skin = "black",
                   status = "info", solidHeader = TRUE,
                   title = "Fare distribution by class",
                   plotOutput("distPlot6"), collapsible = TRUE
+                )
+              ),
+              fluidRow(
+                #distplot2,3 y 4
+                tabBox(
+                  title = "Survival by gender",
+                  # The id lets us use input$tabset1 on the server to find the current tab
+                  id = "tabset1",
+                  tabPanel("Absolute", plotOutput("distPlot2")),
+                  tabPanel("Relative", plotOutput("distPlot3")),
+                  tabPanel("Mosaic", plotOutput("distPlot4"))
+                ),
+                tabBox(
+                  title = "Proportion survival",
+                  # The id lets us use input$tabset2 on the server to find the current tab
+                  id = "tabset2",
+                  tabPanel("United", plotOutput("distPlot7")),
+                  tabPanel("Separated", plotOutput("distPlot8"))
+                )
+              ),
+              fluidRow(
+                box(
+                  status = "info", solidHeader = TRUE,
+                  title = "Gender and survival by class",
+                  plotOutput("distPlot"), collapsible = TRUE
                 )
               )
       )

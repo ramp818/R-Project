@@ -6,6 +6,30 @@
 #    http://shiny.rstudio.com/
 #
 library(shiny)
+library(shinydashboard)
+library("data.table")
+library(ggplot2) 
+library(readr)
+library(dplyr)
+library(tidyr)
+library(forcats)
+library(ggmosaic)
+library(shiny)
+library(hexbin)
+library(MASS)
+library(depth)
+
+#Start Data load
+# Load static trip and shape data
+titanic  <- readRDS("Data/rds/titanic.rds")
+titanic2 <- readRDS("Data/rds/titanic2.rds")
+survivorsperboat  <- readRDS("Data/rds/survivorsperboat.rds")
+nPerGender <- readRDS("Data/rds/nPerGender.rds")
+nGenderSurvival  <- readRDS("Data/rds/nGenderSurvival.rds")
+maleData <- readRDS("Data/rds/maleData.rds")
+femaleData  <- readRDS("Data/rds/femaleData.rds")
+families <- readRDS("Data/rds/families.rds")
+
 # Define server logic required to draw dashboard components
 shinyServer(function(input, output) {
    
@@ -59,6 +83,21 @@ shinyServer(function(input, output) {
   output$distPlot6 <- renderPlot({
     ggplot(d()) + 
       geom_histogram(aes(x = fare,fill = passengerclass), bins = 25,na.rm = TRUE)
+  })
+  
+  output$distPlot7 <- renderPlot({
+    d() %>%
+      filter(!is.na(age)) %>%
+      ggplot() + 
+      geom_jitter(aes(survived, age, color = sex), width = 0.1, alpha = 0.5) 
+  })
+  
+  output$distPlot8 <- renderPlot({
+    d() %>%
+      filter(!is.na(age)) %>% 
+      ggplot() +
+      geom_jitter(aes(survival, age, color = sex), width = 0.1, alpha = 0.5) +
+      facet_wrap(~sex)
   })
 
 })

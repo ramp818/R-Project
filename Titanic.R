@@ -13,7 +13,7 @@ library(hexbin)
 library(MASS)
 library(depth)
 
-titanic = read.csv("titanic.csv",header = TRUE,sep = ";") #read the datafile
+titanic = read.csv("Data/titanic.csv",header = TRUE,sep = ";") #read the datafile
 titanic = titanic[-nrow(titanic),] #remove last line that is only NA
 
 
