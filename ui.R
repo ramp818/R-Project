@@ -19,6 +19,9 @@ library(shiny)
 library(hexbin)
 library(MASS)
 library(depth)
+library(RColorBrewer) 
+library(corrplot)
+library(rgl)
 
 # Define UI for application that draws the dashboard
 dashboardPage(skin = "black",
@@ -29,13 +32,13 @@ dashboardPage(skin = "black",
                    "Male" = "male",
                    "Female" = "female")),
     sidebarMenu(
-      menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-      menuItem("Tables", tabName = "tables")
+      menuItem("Descriptive", tabName = "descriptive", icon = icon("chart-bar")),
+      menuItem("Multivariate", tabName = "multivariate", icon = icon("filter"))
     )
   ),
   dashboardBody(
     tabItems(
-      tabItem("dashboard",
+      tabItem(tabName = "descriptive",
               fluidRow(
                 # A static valueBox
                 valueBox("466", "Female", icon = icon("female"),color = "red"),
@@ -43,12 +46,12 @@ dashboardPage(skin = "black",
               ),
               fluidRow(
                 box(
-                  status = "info", solidHeader = TRUE,
+                  status = "info", solidHeader = FALSE,
                   title = "Age distribution by gender",
                   plotOutput("distPlot5"), collapsible = TRUE
                 ),
                 box(
-                  status = "info", solidHeader = TRUE,
+                  status = "info", solidHeader = FALSE,
                   title = "Fare distribution by class",
                   plotOutput("distPlot6"), collapsible = TRUE
                 )
@@ -72,12 +75,31 @@ dashboardPage(skin = "black",
                 )
               ),
               fluidRow(
+                tabBox(
+                  title = "By class and Families",
+                  # The id lets us use input$tabset1 on the server to find the current tab
+                  id = "tabset3",  height = "500px",
+                  tabPanel("Class", plotOutput("distPlot")),
+                  tabPanel("Families", plotOutput("distPlot11"))
+                ),
                 box(
-                  status = "info", solidHeader = TRUE,
-                  title = "Gender and survival by class",
-                  plotOutput("distPlot"), collapsible = TRUE
+                  status = "info", solidHeader = FALSE, height = "500px",
+                  title = "Probability of survival by gender and age",
+                  plotOutput("distPlot9"), collapsible = TRUE
+                )
+              ),
+              fluidRow(
+                box(
+                  status = "info", solidHeader = FALSE, width = 12,
+                  title = "Probability of survival by gender,class and age",
+                  plotOutput("distPlot10"), collapsible = TRUE
                 )
               )
+      ),
+      tabItem(tabName = "multivariate",
+              plotOutput("distPlot12"),
+              plotOutput("distPlot13"),
+              rglwidgetOutput("distPlot14")
       )
     )
   )

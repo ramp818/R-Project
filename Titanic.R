@@ -157,7 +157,6 @@ families$count<-as.numeric(families$count)
 families$surv<-as.numeric(families$surv)
 families<-subset(families,families$count>1)
 scatter.smooth(families$surv,families$count)
-
 maleData <- titanic[  titanic$sex=="male" , ]
 femaleData <- titanic[  titanic$sex=="female" , ]
 ###################################end of the descriptive model###############################
@@ -181,5 +180,50 @@ correla<-kde2d(core[,2], core[,1], n = 100)
 persp3d(correla,col="red")
 colMeans(core)
 depth(c(33.29548,29.93940),core)
+
+table(titanic$sex)
+pruebafem<-subset(titanic,titanic$survived==1&titanic$sex=="female")
+339/466
+pruebamas<-subset(titanic,titanic$survived==1&titanic$sex=="male")
+161/843
+d<-lm(titanic$survived~titanic$age,method = "qr")
+summary(d)
+d1<-lm(titanic$survived~titanic$sex,method = "qr")
+summary(d1)
+d2<-lm(titanic$survived~titanic$pclass,method = "qr")
+summary(d2)
+
+####
+class(titanic$fare)
+class(titanic$age)
+titanicage<-subset(titanic,!is.na(titanic$age))
+AGE<-mean(titanicage$age)
+titanic$age<-ifelse(is.na(titanic$age),AGE,titanic$age)
+summary(titanic$age)
+titanicfare<-subset(titanic,!is.na(titanic$fare))
+fare<-mean(titanicfare$fare)
+titanic$fare<-ifelse(is.na(titanic$fare),fare,titanic$fare)
+summary(titanic$fare)
+titanic3<-titanic[,c(1,2,4,5,9,12)]
+titanic3$sex<-ifelse(titanic3$sex=="female",1,0)
+titanic3$sex<-as.numeric(titanic3$sex)
+titanic3$boat<-ifelse(is.na(titanic3$boat),0,1)
+library(RColorBrewer) 
+library(corrplot)
+core<-titanic3
+a<-cor(core)
+a
+corrplot(a,method = "number", type="upper", order="hclust", col=brewer.pal(n=8, name="RdYlBu"))
+#PLOT
+#multivariate and depth between survived or not
+library(hexbin)
+bin<-hexbin(core[,4],core[,5], xbins=10, xlab="Norm 1", ylab="Norm 2") 
+plot(bin, main="Hexagonal Binning") #PLOT
+library(MASS)
+library(depth)
+correla<-kde2d(core[,4], core[,5], n = 100)
+persp3d(correla,col="red") ##PLOT
+colMeans(core)
+depth(c(29.9393959,33.2954793),core[,c(4,5)])
 
 
