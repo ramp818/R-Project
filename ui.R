@@ -33,7 +33,8 @@ dashboardPage(skin = "black",
                    "Female" = "female")),
     sidebarMenu(
       menuItem("Descriptive", tabName = "descriptive", icon = icon("chart-bar")),
-      menuItem("Multivariate", tabName = "multivariate", icon = icon("filter"))
+      menuItem("Multivariate", tabName = "multivariate", icon = icon("filter")),
+      menuItem("Data", tabName = "data", icon = icon("database"))
     )
   ),
   dashboardBody(
@@ -77,7 +78,7 @@ dashboardPage(skin = "black",
               fluidRow(
                 tabBox(
                   title = "By class and Families",
-                  # The id lets us use input$tabset1 on the server to find the current tab
+                  # The id lets us use input$tabset3 on the server to find the current tab
                   id = "tabset3",  height = "500px",
                   tabPanel("Class", plotOutput("distPlot")),
                   tabPanel("Families", plotOutput("distPlot11"))
@@ -90,16 +91,43 @@ dashboardPage(skin = "black",
               ),
               fluidRow(
                 box(
-                  status = "info", solidHeader = FALSE, width = 12,
+                  status = "info", solidHeader = FALSE, width = 6,
                   title = "Probability of survival by gender,class and age",
                   plotOutput("distPlot10"), collapsible = TRUE
+                ),
+                tabBox(
+                  title = "Summary Survived",
+                  # The id lets us use input$tabset3 on the server to find the current tab
+                  id = "tabset4",  width = 6,
+                  tabPanel("Age", verbatimTextOutput("summary")),
+                  tabPanel("Sex", verbatimTextOutput("summary2")),
+                  tabPanel("Class", verbatimTextOutput("summary3"))
                 )
               )
       ),
       tabItem(tabName = "multivariate",
-              plotOutput("distPlot12"),
-              plotOutput("distPlot13"),
-              rglwidgetOutput("distPlot14")
+              fluidRow(
+                box(
+                  status = "info", solidHeader = FALSE,
+                  title = "Variable Correlation",
+                  plotOutput("distPlot12"), collapsible = TRUE
+                ),
+                box(
+                  status = "info", solidHeader = FALSE,
+                  title = "Hexagonal Binning",
+                  plotOutput("distPlot13"), collapsible = TRUE
+                )
+              ),
+              fluidRow(
+                box(
+                  status = "info", solidHeader = FALSE, width = 12,
+                  title = "3D Plot",
+                  rglwidgetOutput("distPlot14")
+                )
+              )
+      ),
+      tabItem(tabName = "data",
+              tableOutput("dataset")
       )
     )
   )

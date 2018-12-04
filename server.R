@@ -47,10 +47,15 @@ core<-titanic3
 a<-cor(core)
 bin<-hexbin(core[,4],core[,5], xbins=10, xlab="Norm 1", ylab="Norm 2")
 correla<-kde2d(core[,4], core[,5], n = 100)
+pruebafem<-subset(titanic,titanic$survived==1&titanic$sex=="female")
+pruebamas<-subset(titanic,titanic$survived==1&titanic$sex=="male")
+d1<-lm(titanic$survived~titanic$age,method = "qr")
+d2<-lm(titanic$survived~titanic$sex,method = "qr")
+d3<-lm(titanic$survived~titanic$pclass,method = "qr")
 
 # Define server logic required to draw dashboard components
 shinyServer(function(input, output) {
-   
+  
   #Switch to react to radio buttons
   d <- reactive({
     dist <- switch(input$gender,
@@ -153,7 +158,7 @@ shinyServer(function(input, output) {
   
   output$distPlot13 <- renderPlot({
     
-    plot(bin, main="Hexagonal Binning")
+    plot(bin)
   })
   
   output$distPlot14 <- renderRglwidget({
@@ -161,5 +166,27 @@ shinyServer(function(input, output) {
     persp3d(correla,col="red")
     rglwidget()
   })
+############### End of multivariate and depth analysis
+###############Summary, texts and table ######################
+  output$summary <- renderPrint({
+    d1 <- lm(titanic$survived~titanic$age,method = "qr")
+    summary(d1)
+  })
+  
+  output$summary2 <- renderPrint({
+    d2 <- lm(titanic$survived~titanic$sex,method = "qr")
+    summary(d2)
+  })
+  
+  output$summary3 <- renderPrint({
+    d3 <- lm(titanic$survived~titanic$pclass,method = "qr")
+    summary(d3)
+  })
+  
+  output$dataset <- renderTable({
+    d()
+  })
+  
+#################### End
 
 })
